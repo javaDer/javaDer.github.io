@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.4.0',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="#Docker实战之入门以及Dockerfile(一)  文章内容，由【Docker实训课程】 第一讲视频翻译整理而成 培训代码 https:&#x2F;&#x2F;github.com&#x2F;nicescale&#x2F;docker-training 虚拟机镜像 http:&#x2F;&#x2F;market.aliyun.com&#x2F;products&#x2F;56014007&#x2F; ###首先Docker是软件工业上的集装箱技术 ###回顾，在没有集装箱出现以前">
+<meta name="keywords" content="JAVA，技术,码农">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker实战之入门以及Dockerfile(一)">
+<meta property="og:url" content="http:&#x2F;&#x2F;www.wwtianmei.cn&#x2F;2019&#x2F;11&#x2F;13&#x2F;Docker%E5%AE%9E%E6%88%98%E4%B9%8B%E5%85%A5%E9%97%A8%E4%BB%A5%E5%8F%8ADockerfile(%E4%B8%80)&#x2F;index.html">
+<meta property="og:site_name" content="布衣的私人小站">
+<meta property="og:description" content="#Docker实战之入门以及Dockerfile(一)  文章内容，由【Docker实训课程】 第一讲视频翻译整理而成 培训代码 https:&#x2F;&#x2F;github.com&#x2F;nicescale&#x2F;docker-training 虚拟机镜像 http:&#x2F;&#x2F;market.aliyun.com&#x2F;products&#x2F;56014007&#x2F; ###首先Docker是软件工业上的集装箱技术 ###回顾，在没有集装箱出现以前">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;discuss.csphere.cn&#x2F;uploads&#x2F;default&#x2F;optimized&#x2F;2X&#x2F;4&#x2F;4ae4f9f4583f00766f8126e232d0d5e60042a363_1_666x500.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;discuss.csphere.cn&#x2F;uploads&#x2F;default&#x2F;optimized&#x2F;2X&#x2F;6&#x2F;6643a54f646047a9dbf31cce424408b4d3fe5ee3_1_666x500.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;discuss.csphere.cn&#x2F;uploads&#x2F;default&#x2F;original&#x2F;2X&#x2F;8&#x2F;8f12e062a5b2c17e8f502b01fc87948ee77453df.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;discuss.csphere.cn&#x2F;uploads&#x2F;default&#x2F;original&#x2F;2X&#x2F;1&#x2F;1f82a3e93d907fc9fb5acf552f2646b74f5706d5.jpg">
+<meta property="og:updated_time" content="2019-11-13T12:52:19.367Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;discuss.csphere.cn&#x2F;uploads&#x2F;default&#x2F;optimized&#x2F;2X&#x2F;4&#x2F;4ae4f9f4583f00766f8126e232d0d5e60042a363_1_666x500.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://www.wwtianmei.cn/2019/11/13/Docker实战之入门以及Dockerfile(一)/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Docker实战之入门以及Dockerfile(一) | 布衣的私人小站</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?92f92bff882fe99cb445d28a4a7eca83";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">布衣的私人小站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">wwtianmei</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+    <a href="/schedule/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />日程表</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />公益 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.wwtianmei.cn/2019/11/13/Docker%E5%AE%9E%E6%88%98%E4%B9%8B%E5%85%A5%E9%97%A8%E4%BB%A5%E5%8F%8ADockerfile(%E4%B8%80)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="布衣">
+      <meta itemprop="description" content="技术，JAVA，微服务">
+      <meta itemprop="image" content="https://img.tuzhaozhao.com/2018/12/10/8084675e1387a842_600x600.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="布衣的私人小站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Docker实战之入门以及Dockerfile(一)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-13 20:52:19" itemprop="dateCreated datePublished" datetime="2019-11-13T20:52:19+08:00">2019-11-13</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>#Docker实战之入门以及Dockerfile(一) </p>
+<p>文章内容，由【<a href="https://csphere.cn/training" target="_blank" rel="noopener">Docker实训课程</a>】</p>
+<p><a href="http://pan.baidu.com/s/1hq2COGc" target="_blank" rel="noopener">第一讲视频</a>翻译整理而成</p>
+<p><a href="https://github.com/nicescale/docker-training" target="_blank" rel="noopener">培训代码</a> <a href="https://github.com/nicescale/docker-training" target="_blank" rel="noopener">https://github.com/nicescale/docker-training</a></p>
+<p><a href="http://market.aliyun.com/products/56014007/jxsc000181.html" target="_blank" rel="noopener">虚拟机镜像</a> <a href="http://market.aliyun.com/products/56014007/" target="_blank" rel="noopener">http://market.aliyun.com/products/56014007/</a></p>
+<p>###首先Docker是软件工业上的集装箱技术</p>
+<p>###回顾，在没有集装箱出现以前，传统运输行业中，会存在这些问题：</p>
+<ul>
+<li>在运输过程中，货物损坏</li>
+<li>装卸、运输货物，效率低下</li>
+<li>运输手续繁多及运输环节多</li>
+<li>劳动强度大，及船舶周转慢</li>
+</ul>
+<p>###在集装箱出现后，完全改变了这种状况，是由于集装箱：</p>
+<ul>
+<li>规则标准化，大大减少了包装费用</li>
+<li>大大提升了货物装卸效率、及运输效率</li>
+<li>不同种运输工具之间转换更容易</li>
+</ul>
+<p>###所以，集装箱出现是传统行业中的一次重大变革</p>
+<p>###传统软件行业中存在的问题</p>
+<ul>
+<li>软件更新发布低效</li>
+<li>业务无法敏捷</li>
+<li>环境一致性，难于保证</li>
+<li>不同环境之间迁移成本太高</li>
+<li>软件开发商，交付实施周期长—成本高</li>
+</ul>
+<p>###有了Docker，以上问题，有望或者说在很大程度上可以得到解决</p>
+<h2 id="二、Docker的组成"><a href="#二、Docker的组成" class="headerlink" title="二、Docker的组成"></a>二、Docker的组成</h2><h4 id="Docker是一个C-S架构"><a href="#Docker是一个C-S架构" class="headerlink" title="Docker是一个C/S架构"></a>Docker是一个C/S架构</h4><p><img src="https://discuss.csphere.cn/uploads/default/optimized/2X/4/4ae4f9f4583f00766f8126e232d0d5e60042a363_1_666x500.jpg" alt=""></p>
+<ul>
+<li>Docker Client： Docker的客户端</li>
+<li>Docker Server： Docker daemon的主要组成部分，接收用户通过Docker Client发送的请求，并按照相应的路由规则实现路由分发</li>
+<li>Docker Registry： Registry是Docker镜像的中央存储仓库（pull/push）</li>
+</ul>
+<blockquote>
+<p>通过docker pull命令可以把Registry上的docker镜像，下载到服务器本地</p>
+</blockquote>
+<blockquote>
+<p>通过docker push命令可以把服务器本地的docker镜像，上传到Registry上</p>
+</blockquote>
+<p><strong>Registry在构建自动化平台，起着非常重要的作用！</strong></p>
+<p><img src="https://discuss.csphere.cn/uploads/default/optimized/2X/6/6643a54f646047a9dbf31cce424408b4d3fe5ee3_1_666x500.jpg" alt=""></p>
+<p><em>提示：Docker镜像运行之后会成为Docker容器—-通过 docker run命令</em></p>
+<p>####Docker容器启动速度非常快，体现在2个方面；</p>
+<p>1.磁盘占用空间小，因为docker镜像采用了分层技术，构建的镜像大小，只有自身的大小，不包含父镜像的大小</p>
+<p>2.内存消耗少，docker容器共享的宿主机的内核，没有操作的进程消耗</p>
+<p>##Docker实战准备</p>
+<ol>
+<li>首先登陆<a href="http://git.oschina.net" target="_blank" rel="noopener">OSChina Git</a></li>
+<li>将<a href="http://git.oschina.net/dockerf/docker-training" target="_blank" rel="noopener">docker-training</a>项目Fork到自己的仓库</li>
+<li>使用自己熟悉的SSH工具连接到服务器</li>
+<li>执行<code>git clone https://git.oschina.net/*YOURNAME*/docker-training.git</code>，将你的远程仓库clone到服务器</li>
+</ol>
+<p><a href="http://git.oschina.net/progit/" target="_blank" rel="noopener">Git 使用指南</a></p>
+<p>后续会构建4个docker镜像，分别为：</p>
+<blockquote>
+<p>centos7 (基础镜像)</p>
+</blockquote>
+<blockquote>
+<p>php-fpm mysql（中间件镜像）</p>
+</blockquote>
+<blockquote>
+<p>worpdress(应用镜像)</p>
+</blockquote>
+<p>####什么是Dockerfile？<br><img src="https://discuss.csphere.cn/uploads/default/original/2X/8/8f12e062a5b2c17e8f502b01fc87948ee77453df.jpg" alt=""></p>
+<blockquote>
+<p>Dockerfile是自动构建docker镜像的配置文件，Dockerfile中的命令非常类似linux shell下的命令</p>
+</blockquote>
+<blockquote>
+<p>Dockerfile,可以让用户自定义构建docker镜像，支持以 # 开头的注释行</p>
+</blockquote>
+<blockquote>
+<p>一般，Dockerfile分为4部分</p>
+</blockquote>
+<ul>
+<li>基础镜像（父镜像）信息</li>
+<li>维护者信息</li>
+<li>镜像操作命令</li>
+<li>容器启动命令</li>
+</ul>
+<p>####为何把Dockerfile存放到git仓库中，并为每个项目创建git仓库？</p>
+<blockquote>
+<p>方便通过自动化平台，自动构建docker镜像</p>
+</blockquote>
+<p>##三、Dockerfile介绍</p>
+<p>###基础镜像csphere/centos:7.1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">#</span><br><span class="line"># MAINTAINER        Carson,C.J.Zeong &lt;zcy@nicescale.com&gt;</span><br><span class="line"># DOCKER-VERSION    1.6.2</span><br><span class="line">#</span><br><span class="line"># Dockerizing CentOS7: Dockerfile for building CentOS images</span><br><span class="line">#</span><br><span class="line">FROM       centos:centos7.1.1503</span><br><span class="line">MAINTAINER Carson,C.J.Zeong &lt;zcy@nicescale.com&gt;</span><br><span class="line"></span><br><span class="line">ENV TZ &quot;Asia/Shanghai&quot;</span><br><span class="line">ENV TERM xterm</span><br><span class="line"></span><br><span class="line">ADD aliyun-mirror.repo /etc/yum.repos.d/CentOS-Base.repo</span><br><span class="line">ADD aliyun-epel.repo /etc/yum.repos.d/epel.repo</span><br><span class="line"></span><br><span class="line">RUN yum install -y curl wget tar bzip2 unzip vim-enhanced passwd sudo yum-utils hostname net-tools rsync man &amp;&amp; \</span><br><span class="line">    yum install -y gcc gcc-c++ git make automake cmake patch logrotate python-devel libpng-devel libjpeg-devel &amp;&amp; \</span><br><span class="line">    yum install -y --enablerepo=epel pwgen python-pip &amp;&amp; \</span><br><span class="line">    yum clean all</span><br><span class="line"></span><br><span class="line">RUN pip install supervisor</span><br><span class="line">ADD supervisord.conf /etc/supervisord.conf</span><br><span class="line"></span><br><span class="line">RUN mkdir -p /etc/supervisor.conf.d &amp;&amp; \</span><br><span class="line">    mkdir -p /var/log/supervisor</span><br><span class="line"></span><br><span class="line">EXPOSE 22</span><br><span class="line"></span><br><span class="line">ENTRYPOINT [&quot;/usr/bin/supervisord&quot;, &quot;-n&quot;, &quot;-c&quot;, &quot;/etc/supervisord.conf&quot;]</span><br></pre></td></tr></table></figure>
+
+<p><code>FROM       centos:centos7.1.1503</code> </p>
+<blockquote>
+<p>基于<strong>父镜像</strong>构建其他docker镜像，_父镜像_：可以通过docker pull 命令获得，也可以自己制作</p>
+</blockquote>
+<p><code>MAINTAINER Carson,C.J.Zeong &lt;zcy@nicescale.com&gt;</code>    </p>
+<blockquote>
+<p>Dockerfile维护者</p>
+</blockquote>
+<p><code>ENV TZ &quot;Asia/Shanghai&quot;</code></p>
+<blockquote>
+<p>ENV（environment）设置环境变量，一个Dockerfile中可以写多个。以上例子是：设置docker容器的时区为Shanghai</p>
+</blockquote>
+<p>######Dockerfile中有2条指令可以拷贝文件</p>
+<p><code>ADD aliyun-mirror.repo /etc/yum.repos.d/CentOS-Base.repo</code> </p>
+<blockquote>
+<p>拷贝本地文件到docker容器里，还可以拷贝URL链接地址下的文件，ADD还具有解压软件包的功能(支持gzip, bzip2 or xz)</p>
+</blockquote>
+<p><code>COPY test /mydir</code> </p>
+<blockquote>
+<p>拷贝本地文件到docker容器</p>
+</blockquote>
+<p><code>RUN yum install -y curl wget....</code> </p>
+<blockquote>
+<p>RUN命令，非常类似linux下的shell命令 <code>(the command is run in a shell - /bin/sh -c - shell form)</code></p>
+</blockquote>
+<blockquote>
+<p>在Dockerfile中每执行一条指令（ENV、ADD、RUN等命令），都会生成一个docker image layer</p>
+</blockquote>
+<p><code>RUN pip install supervisor</code> </p>
+<blockquote>
+<p>supervisor进程管理系统，推荐使用</p>
+</blockquote>
+<p><code>ADD supervisord.conf /etc/supervisord.conf</code></p>
+<blockquote>
+<p>添加supervisor的主配置文件，到docker容器里</p>
+</blockquote>
+<p><code>RUN mkdir -p /etc/supervisor.conf.d</code></p>
+<blockquote>
+<p>创建存放启动其他服务”supervisor.conf”的目录，此目录下的所有以.conf结尾的文件，在启动docker容器的时候会被加载</p>
+</blockquote>
+<p><code>EXPOSE 22</code></p>
+<blockquote>
+<p>端口映射 <code>EXPOSE &lt;host_port&gt;:&lt;container_port&gt;</code></p>
+</blockquote>
+<blockquote>
+<p>推荐使用<code>docker run -p &lt;host_port&gt;:&lt;container_port&gt;</code> 来固化端口</p>
+</blockquote>
+<p><code>ENTRYPOINT [&quot;/usr/bin/supervisord&quot;, &quot;-n&quot;, &quot;-c&quot;, &quot;/etc/supervisord.conf&quot;]</code></p>
+<blockquote>
+<p>一个Dockerfile中只有最后一条<code>ENTRYPOINT</code>生效，并且每次启动docker容器，都会执行<code>ENTRYPOINT</code></p>
+</blockquote>
+<p>######以上文件就是用来生成第一个docker镜像的Dockerfile，通过<code>docker build</code>指令来生成docker镜像</p>
+<p><code>docker build -t csphere/centos:7.1 .</code></p>
+<blockquote>
+<p>如果Dockerfile在当前目录下，输入点<code>.</code>就可以进行加载当前目录下的<code>Dockerfile</code></p>
+</blockquote>
+<blockquote>
+<p>如果不在当前目录下需要运行<code>docker build -t csphere/centos:7.1 &lt;Dockerfile_dir&gt;</code>加载相对路径下的<code>Dockerfile</code></p>
+</blockquote>
+<p>docker镜像的命名规则 <code>registry_url/namespace/image_name:tag</code> 默认<code>tag</code>是<code>latest</code></p>
+<blockquote>
+<p>在构建Docker镜像时，如果有自己内部的yum源，替换成自己内部的yum源地址，可以加快构建速度。</p>
+</blockquote>
+<blockquote>
+<p>如果第一次构建失败，会有部分镜像layer生成，第二次构建会基于第一次构建所生成的layer（use cache），继续构建</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Step 10 : EXPOSE 22</span><br><span class="line"> ---&gt; Running in 0ed1c5479ebc</span><br><span class="line"> ---&gt; c57a5bac41c8</span><br><span class="line">Removing intermediate container 0ed1c5479ebc</span><br><span class="line">Step 11 : ENTRYPOINT /usr/bin/supervisord -n -c /etc/supervisord.conf</span><br><span class="line"> ---&gt; Running in e16c7ac2fd45</span><br><span class="line"> ---&gt; 185ef7b101a8</span><br><span class="line">Removing intermediate container e16c7ac2fd45</span><br><span class="line">Successfully built 185ef7b101a8</span><br></pre></td></tr></table></figure>
+<p>可以看到每执行一条<code>Dockerfile</code>的指令都会生成一个镜像的layer<code>c57a5bac41c8</code> <code>185ef7b101a8</code> 最后<code>185ef7b101a8</code>这个是docker镜像的ID,<code>185ef7b101a8</code>是由<code>c57a5bac41c8</code> <code>185ef7b101a8</code>…layers叠加而成，体现了docker镜像是分层的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># docker images    查看当前主机本地有哪些docker镜像 </span><br><span class="line">REPOSITORY                             TAG                 IMAGE ID            CREATED             VIRTUAL SIZE</span><br><span class="line">csphere/centos                         7.1                 185ef7b101a8        40 minutes ago      451.9 MB</span><br></pre></td></tr></table></figure>
+
+<p>通过docker镜像生成一个docker容器</p>
+<p><code>docker help run</code>  #查看<code>docker run</code>命令的使用方法</p>
+<p>#####介绍日常工作中经常用到的参数:</p>
+<p><code>docker run -it</code> #启动docker容器在前端<br><code>docker run -d</code>  #启动docker容器在后台</p>
+<p><code>docker run -p</code><br><code>docker run -P</code></p>
+<blockquote>
+<p>在Dockerfile中有一条指令是EXPOSE 22，如果使用<code>-P</code>，宿主机会随机选择一个<code>没有被使用的端口</code>和docker<code>容器的22端口</code>做<code>端口映射</code>,如果docker主机或者容器重启后，宿主机又会随机选择一个没有被使用的端口和docker容器的22端口做端口映射，这样端口会发生<code>变化</code></p>
+</blockquote>
+<blockquote>
+<p>如果使用<code>-p</code>,比如<code>2222:22</code>，这样不管是docker主机或者容器重启后，2222:22端口都是这样来映射，<code>不会发生改变</code> </p>
+</blockquote>
+<p>生成docker容器</p>
+<p><code>docker run -d -p 2222:22 --name base csphere/centos:7.1</code></p>
+<p><code>37ac69acf47d501ffc61d8883ae2ba362a132d11e46897212a92b1936e0a0593</code></p>
+<p>参数说明：</p>
+<ul>
+<li>-d 后台运行</li>
+<li>-it 前台交互式运行</li>
+<li>-P 22 将宿主机的一个未使用的随机端口映射到容器的22端口</li>
+<li>-p 2222:22 将宿主机的2222端口映射到容器的22端口</li>
+<li>–name base 给容器命名为base</li>
+<li>csphere/centos:7.1 使用这个镜像镜像创建docker容器</li>
+</ul>
+<p>查看Docker容器</p>
+<p><code>docker ps</code></p>
+<blockquote>
+<p><code>ps</code>默认只会显示容器在“running”的状态的，容器列表</p>
+</blockquote>
+<p><code>docker ps -a</code></p>
+<blockquote>
+<p><code>ps -a</code> 会查看到所有的容器列表</p>
+</blockquote>
+<p>下一篇<a href="http://git.oschina.net/dockerf/docker-practice/blob/master/Docker%E5%AE%9E%E6%88%98%E4%B9%8B%E5%85%A5%E9%97%A8%E4%BB%A5%E5%8F%8ADockerfile%28%E4%BA%8C%29.md?dir=0&filepath=Docker%E5%AE%9E%E6%88%98%E4%B9%8B%E5%85%A5%E9%97%A8%E4%BB%A5%E5%8F%8ADockerfile%28%E4%BA%8C%29.md&oid=76ce88d4a3af4e797873fac07f8f84c4ac72602a&sha=f11d77675b6ad637a21f26ece6bb11b9e4a66386" target="_blank" rel="noopener">Docker实战之入门以及Dockerfile(二)</a></p>
+<hr>
+<p>说明，文章由<a href="https://csphere.cn" target="_blank" rel="noopener">cSphere-希云</a>所有，转载请整体转载，并保留原文链接，且不得修改原文！</p>
+<p>转载，请联系”cSphere”微信公众号<br><img src="https://discuss.csphere.cn/uploads/default/original/2X/1/1f82a3e93d907fc9fb5acf552f2646b74f5706d5.jpg" alt=""></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/13/Docker%E5%AE%9E%E6%88%98%E4%B9%8BDockerfile/" rel="next" title="Docker实战之Dockerfile">
+                <i class="fa fa-chevron-left"></i> Docker实战之Dockerfile
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/11/13/Docker%E5%AE%9E%E6%88%98%E4%B9%8B%E5%85%A5%E9%97%A8%E4%BB%A5%E5%8F%8ADockerfile(%E4%BA%8C)/" rel="prev" title="Docker实战之入门以及Dockerfile(二)">
+                Docker实战之入门以及Dockerfile(二) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://img.tuzhaozhao.com/2018/12/10/8084675e1387a842_600x600.jpg"
+                alt="布衣" />
+            
+              <p class="site-author-name" itemprop="name">布衣</p>
+              <p class="site-description motion-element" itemprop="description">技术，JAVA，微服务</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/%20%7C%7C%20archive">
+                
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/javaDer" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:fa20091001@163.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Docker的组成"><span class="nav-number">1.</span> <span class="nav-text">二、Docker的组成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker是一个C-S架构"><span class="nav-number">1.0.1.</span> <span class="nav-text">Docker是一个C/S架构</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">布衣</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v4.0.0</div>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Pisces</a> v6.4.0</div>
+<div class=BbeiAn-info">
+  陇ICP备 -
+  <a href="http://www.miitbeian.gov.cn/" target="_blank" rel="noopener">18000643-1</a>
+  </a>
+</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
