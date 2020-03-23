@@ -108,13 +108,13 @@
 
 
 
-  <meta name="description" content="ES的多种检索方式1.查询全部： GET &#x2F;ecommerce&#x2F;product&#x2F;_search took:1 #耗费了多少毫秒 time_out:false #是否超时 &amp;quot;_shards&amp;quot; : {  &amp;quot;total&amp;quot; : 1, &amp;quot;successful&amp;quot; : 1, &amp;quot;skipped&amp;quot; : 0, &amp;quot;failed&amp;q">
+  <meta name="description" content="ES的多种检索方式#1.查询全部： GET &#x2F;ecommerce&#x2F;product&#x2F;_search took:1 #耗费了多少毫秒 time_out:false #是否超时 &amp;quot;_shards&amp;quot; : {  &amp;quot;total&amp;quot; : 1, &amp;quot;successful&amp;quot; : 1, &amp;quot;skipped&amp;quot; : 0, &amp;quot;failed&amp;">
 <meta name="keywords" content="JAVA，技术,码农">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ES的多种检索方式">
 <meta property="og:url" content="http:&#x2F;&#x2F;www.wwtianmei.cn&#x2F;2019&#x2F;11&#x2F;10&#x2F;ES%E7%9A%84%E5%A4%9A%E7%A7%8D%E6%A3%80%E7%B4%A2%E6%96%B9%E5%BC%8F&#x2F;index.html">
 <meta property="og:site_name" content="布衣的私人小站">
-<meta property="og:description" content="ES的多种检索方式1.查询全部： GET &#x2F;ecommerce&#x2F;product&#x2F;_search took:1 #耗费了多少毫秒 time_out:false #是否超时 &amp;quot;_shards&amp;quot; : {  &amp;quot;total&amp;quot; : 1, &amp;quot;successful&amp;quot; : 1, &amp;quot;skipped&amp;quot; : 0, &amp;quot;failed&amp;q">
+<meta property="og:description" content="ES的多种检索方式#1.查询全部： GET &#x2F;ecommerce&#x2F;product&#x2F;_search took:1 #耗费了多少毫秒 time_out:false #是否超时 &amp;quot;_shards&amp;quot; : {  &amp;quot;total&amp;quot; : 1, &amp;quot;successful&amp;quot; : 1, &amp;quot;skipped&amp;quot; : 0, &amp;quot;failed&amp;">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-11-10T14:54:25.924Z">
 <meta name="twitter:card" content="summary">
@@ -413,7 +413,7 @@
       
 
       
-        <h2 id="ES的多种检索方式"><a href="#ES的多种检索方式" class="headerlink" title="ES的多种检索方式"></a>ES的多种检索方式</h2><pre><code>1.查询全部：
+        <h2><span id="es-de-duo-chong-jian-suo-fang-shi">ES的多种检索方式</span><a href="#es-de-duo-chong-jian-suo-fang-shi" class="header-anchor">#</a></h2><pre><code>1.查询全部：
 GET /ecommerce/product/_search
 took:1 #耗费了多少毫秒
 time_out:false #是否超时
@@ -427,7 +427,7 @@ time_out:false #是否超时
 &quot;max_score&quot; : 1.0 score的含义，就是document对于一个search的相关度的匹配分数，越相关，就越匹配，分数越高
 &quot;hits.hits&quot;:包含了匹配搜索的document的详细数据
 GET /ecommerce/product/_search?q=name:yagao&amp;sort=price:desc</code></pre><p>—— 生产中并不常用 —–</p>
-<h3 id="DSL（Domain-Specified-Language）：特定领域的语言"><a href="#DSL（Domain-Specified-Language）：特定领域的语言" class="headerlink" title="DSL（Domain Specified Language）：特定领域的语言"></a>DSL（Domain Specified Language）：特定领域的语言</h3><pre><code>1.查询所有的商品
+<h3><span id="dsl-domain-specified-language-te-ding-ling-yu-de-yu-yan">DSL（Domain Specified Language）：特定领域的语言</span><a href="#dsl-domain-specified-language-te-ding-ling-yu-de-yu-yan" class="header-anchor">#</a></h3><pre><code>1.查询所有的商品
 GET /ecommerce/product/_search
 {
   &quot;query&quot;:{
@@ -635,14 +635,40 @@ GET /ecommerce/product/_search
                 
                   <a href="/archives/%20%7C%7C%20archive">
                 
-                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
               
 
               
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">分类</span>
+                  
+                </div>
+              
 
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
               
             </nav>
           
@@ -689,7 +715,7 @@ GET /ecommerce/product/_search
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ES的多种检索方式"><span class="nav-number">1.</span> <span class="nav-text">ES的多种检索方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DSL（Domain-Specified-Language）：特定领域的语言"><span class="nav-number">1.1.</span> <span class="nav-text">DSL（Domain Specified Language）：特定领域的语言</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#null"><span class="nav-number">1.</span> <span class="nav-text">ES的多种检索方式#</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#null"><span class="nav-number">1.1.</span> <span class="nav-text">DSL（Domain Specified Language）：特定领域的语言#</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -710,7 +736,7 @@ GET /ecommerce/product/_search
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
