@@ -32,7 +32,7 @@
 
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 <link rel="alternate" href="/atom.xml" title="布衣的私人小站" type="application/atom+xml">
-
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 </head>
 
@@ -477,9 +477,6 @@
         <hr class="clearfix">
 
         
-        <!-- 是否加载使用自带的 prismjs. -->
-        <link rel="stylesheet" href="/libs/prism/prism.css">
-        
 
         
 
@@ -572,9 +569,35 @@
 </blockquote>
 <p>##三、Dockerfile介绍</p>
 <p>###基础镜像csphere/centos:7.1</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">#</span><br><span class="line"># MAINTAINER        Carson,C.J.Zeong &lt;zcy@nicescale.com&gt;</span><br><span class="line"># DOCKER-VERSION    1.6.2</span><br><span class="line">#</span><br><span class="line"># Dockerizing CentOS7: Dockerfile for building CentOS images</span><br><span class="line">#</span><br><span class="line">FROM       centos:centos7.1.1503</span><br><span class="line">MAINTAINER Carson,C.J.Zeong &lt;zcy@nicescale.com&gt;</span><br><span class="line"></span><br><span class="line">ENV TZ "Asia/Shanghai"</span><br><span class="line">ENV TERM xterm</span><br><span class="line"></span><br><span class="line">ADD aliyun-mirror.repo /etc/yum.repos.d/CentOS-Base.repo</span><br><span class="line">ADD aliyun-epel.repo /etc/yum.repos.d/epel.repo</span><br><span class="line"></span><br><span class="line">RUN yum install -y curl wget tar bzip2 unzip vim-enhanced passwd sudo yum-utils hostname net-tools rsync man &amp;&amp; \</span><br><span class="line">    yum install -y gcc gcc-c++ git make automake cmake patch logrotate python-devel libpng-devel libjpeg-devel &amp;&amp; \</span><br><span class="line">    yum install -y --enablerepo=epel pwgen python-pip &amp;&amp; \</span><br><span class="line">    yum clean all</span><br><span class="line"></span><br><span class="line">RUN pip install supervisor</span><br><span class="line">ADD supervisord.conf /etc/supervisord.conf</span><br><span class="line"></span><br><span class="line">RUN mkdir -p /etc/supervisor.conf.d &amp;&amp; \</span><br><span class="line">    mkdir -p /var/log/supervisor</span><br><span class="line"></span><br><span class="line">EXPOSE 22</span><br><span class="line"></span><br><span class="line">ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]</span><br></pre></td></tr></tbody></table></figure>
+<pre><code>#
+# MAINTAINER        Carson,C.J.Zeong &lt;zcy@nicescale.com&gt;
+# DOCKER-VERSION    1.6.2
+#
+# Dockerizing CentOS7: Dockerfile for building CentOS images
+#
+FROM       centos:centos7.1.1503
+MAINTAINER Carson,C.J.Zeong &lt;zcy@nicescale.com&gt;
 
-<p><code>FROM       centos:centos7.1.1503</code> </p>
+ENV TZ "Asia/Shanghai"
+ENV TERM xterm
+
+ADD aliyun-mirror.repo /etc/yum.repos.d/CentOS-Base.repo
+ADD aliyun-epel.repo /etc/yum.repos.d/epel.repo
+
+RUN yum install -y curl wget tar bzip2 unzip vim-enhanced passwd sudo yum-utils hostname net-tools rsync man &amp;&amp; \
+    yum install -y gcc gcc-c++ git make automake cmake patch logrotate python-devel libpng-devel libjpeg-devel &amp;&amp; \
+    yum install -y --enablerepo=epel pwgen python-pip &amp;&amp; \
+    yum clean all
+
+RUN pip install supervisor
+ADD supervisord.conf /etc/supervisord.conf
+
+RUN mkdir -p /etc/supervisor.conf.d &amp;&amp; \
+    mkdir -p /var/log/supervisor
+
+EXPOSE 22
+
+ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]</code></pre><p><code>FROM       centos:centos7.1.1503</code> </p>
 <blockquote>
 <p>基于<strong>父镜像</strong>构建其他docker镜像，_父镜像_：可以通过docker pull 命令获得，也可以自己制作</p>
 </blockquote>
@@ -640,11 +663,18 @@
 <blockquote>
 <p>如果第一次构建失败，会有部分镜像layer生成，第二次构建会基于第一次构建所生成的layer（use cache），继续构建</p>
 </blockquote>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Step 10 : EXPOSE 22</span><br><span class="line"> ---&gt; Running in 0ed1c5479ebc</span><br><span class="line"> ---&gt; c57a5bac41c8</span><br><span class="line">Removing intermediate container 0ed1c5479ebc</span><br><span class="line">Step 11 : ENTRYPOINT /usr/bin/supervisord -n -c /etc/supervisord.conf</span><br><span class="line"> ---&gt; Running in e16c7ac2fd45</span><br><span class="line"> ---&gt; 185ef7b101a8</span><br><span class="line">Removing intermediate container e16c7ac2fd45</span><br><span class="line">Successfully built 185ef7b101a8</span><br></pre></td></tr></tbody></table></figure>
-<p>可以看到每执行一条<code>Dockerfile</code>的指令都会生成一个镜像的layer<code>c57a5bac41c8</code> <code>185ef7b101a8</code> 最后<code>185ef7b101a8</code>这个是docker镜像的ID,<code>185ef7b101a8</code>是由<code>c57a5bac41c8</code> <code>185ef7b101a8</code>…layers叠加而成，体现了docker镜像是分层的</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># docker images    查看当前主机本地有哪些docker镜像 </span><br><span class="line">REPOSITORY                             TAG                 IMAGE ID            CREATED             VIRTUAL SIZE</span><br><span class="line">csphere/centos                         7.1                 185ef7b101a8        40 minutes ago      451.9 MB</span><br></pre></td></tr></tbody></table></figure>
-
-<p>通过docker镜像生成一个docker容器</p>
+<pre><code>Step 10 : EXPOSE 22
+ ---&gt; Running in 0ed1c5479ebc
+ ---&gt; c57a5bac41c8
+Removing intermediate container 0ed1c5479ebc
+Step 11 : ENTRYPOINT /usr/bin/supervisord -n -c /etc/supervisord.conf
+ ---&gt; Running in e16c7ac2fd45
+ ---&gt; 185ef7b101a8
+Removing intermediate container e16c7ac2fd45
+Successfully built 185ef7b101a8</code></pre><p>可以看到每执行一条<code>Dockerfile</code>的指令都会生成一个镜像的layer<code>c57a5bac41c8</code> <code>185ef7b101a8</code> 最后<code>185ef7b101a8</code>这个是docker镜像的ID,<code>185ef7b101a8</code>是由<code>c57a5bac41c8</code> <code>185ef7b101a8</code>…layers叠加而成，体现了docker镜像是分层的</p>
+<pre><code># docker images    查看当前主机本地有哪些docker镜像 
+REPOSITORY                             TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+csphere/centos                         7.1                 185ef7b101a8        40 minutes ago      451.9 MB</code></pre><p>通过docker镜像生成一个docker容器</p>
 <p><code>docker help run</code>  #查看<code>docker run</code>命令的使用方法</p>
 <p>#####介绍日常工作中经常用到的参数:</p>
 <p><code>docker run -it</code> #启动docker容器在前端<br><code>docker run -d</code>  #启动docker容器在后台</p>
@@ -956,13 +986,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2016/03/09/docker-shi-zhan-zhi-ru-men-yi-ji-dockerfile-san/">
+                <a href="/2016/03/09/docker-shi-zhan-zhi-ru-men-yi-ji-dockerfile-er/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="Docker实战之入门以及Dockerfile(三)">
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="Docker实战之入门以及Dockerfile(二)">
                         
-                        <span class="card-title">Docker实战之入门以及Dockerfile(三)</span>
+                        <span class="card-title">Docker实战之入门以及Dockerfile(二)</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1163,7 +1193,7 @@
         <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
                    server="netease"
                    type="playlist"
-                   id="503838841"
+                   id="4965675848"
                    fixed='true'
                    autoplay='false'
                    theme='#42b983'

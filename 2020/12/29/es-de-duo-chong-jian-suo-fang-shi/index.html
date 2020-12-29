@@ -32,7 +32,7 @@
 
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 <link rel="alternate" href="/atom.xml" title="布衣的私人小站" type="application/atom+xml">
-
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 </head>
 
@@ -434,9 +434,13 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Elasticsearch/">
+                                <span class="chip bg-color">Elasticsearch</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -448,7 +452,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2019-11-10
+                    2020-12-29
                 </div>
                 
 
@@ -464,124 +468,179 @@
         <hr class="clearfix">
 
         
-        <!-- 是否加载使用自带的 prismjs. -->
-        <link rel="stylesheet" href="/libs/prism/prism.css">
-        
 
         
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2><span id="es-de-duo-chong-jian-suo-fang-shi">ES的多种检索方式</span><a href="#es-de-duo-chong-jian-suo-fang-shi" class="header-anchor">#</a></h2><pre><code>1.查询全部：
-GET /ecommerce/product/_search
-took:1 #耗费了多少毫秒
-time_out:false #是否超时
-"_shards" : { 
-"total" : 1,
-"successful" : 1,
-"skipped" : 0,
-"failed" : 0
-}
-"hits.total":6 查询结果的数量
-"max_score" : 1.0 score的含义，就是document对于一个search的相关度的匹配分数，越相关，就越匹配，分数越高
-"hits.hits":包含了匹配搜索的document的详细数据
-GET /ecommerce/product/_search?q=name:yagao&amp;sort=price:desc</code></pre><p>—— 生产中并不常用 —–</p>
-<h3><span id="dsl-domain-specified-language-te-ding-ling-yu-de-yu-yan">DSL（Domain Specified Language）：特定领域的语言</span><a href="#dsl-domain-specified-language-te-ding-ling-yu-de-yu-yan" class="header-anchor">#</a></h3><pre><code>1.查询所有的商品
-GET /ecommerce/product/_search
-{
-  "query":{
-    "match_all":{}
-  }
-}
+                <p><strong>## ES的多种检索方式</strong></p>
+<h4><span id="1-cha-xun-quan-bu">1.查询全部：</span><a href="#1-cha-xun-quan-bu" class="header-anchor">#</a></h4><p>  GET /ecommerce/product/_search</p>
+<p>  took:1 #耗费了多少毫秒</p>
+<p>  time_out:false #是否超时</p>
+<pre class=" language-json"><code class="language-json">  <span class="token property">"_shards"</span> <span class="token operator">:</span> <span class="token punctuation">{</span> 
 
-2.降序排序
-GET /ecommerce/product/_search
-{
-"query":{
-    "match":{
-    "name":"yagao"
-    }
-},
-"sort":[
-    {"price":"desc"}
-    ]
-}
+  <span class="token property">"total"</span> <span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
 
-3.分页查询
-GET /ecommerce/product/_search
-{
-"query":{
-    "match_all":{}
-},
-"from":1,
-"size":2
-}
+  <span class="token property">"successful"</span> <span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
 
-4.指定查询输出的字段
-GET /ecommerce/product/_search
-{
-"query":{
-    "match_all":{}
-},
-"_source":["name","price"]
-}
-}
+  <span class="token property">"skipped"</span> <span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
 
-5.对数据进行过滤
-GET /ecommerce/product/_search
-{
-"query":{
-    "bool":{
-    "must":{
-        "match":{
-        "name":"yagao"
-        }
-    },
-    "filter":{
-        "range":{
-        "price":{
-            "gt":11
-        }
-        }
-    }
-    }
-}
-} 
+  <span class="token property">"failed"</span> <span class="token operator">:</span> <span class="token number">0</span>
 
-6.全文检索
-GET /ecommerce/product/_search
-{
-"query":{
-    "match":{
-    "producer":"yagao producer"
-    }
-}
-}
+  <span class="token punctuation">}</span></code></pre>
+<p>  “hits.total”:6 查询结果的数量</p>
+<p>  “max_score” : 1.0 score的含义，就是document对于一个search的相关度的匹配分数，越相关，就越匹配，分数越高</p>
+<p>  “hits.hits”:包含了匹配搜索的document的详细数据</p>
+<pre><code>GET /ecommerce/product/_search?q=name:yagao&amp;sort=price:desc</code></pre><p><font color="#ABCDE">—— 生产中并不常用 —–</font></p>
+<p><strong>### DSL（Domain Specified Language）：特定领域的语言</strong></p>
+<p>  1.查询所有的商品</p>
+<pre><code> GET /ecommerce/product/_search</code></pre><pre><code>{
 
-7.短语搜索
-GET /ecommerce/product/_search
-{
-"query":{
-    "match_phrase":{
-    "producer":"yaogao producer"
-    }
-}
-}
+   "query":{
 
-8.高亮
-GET /ecommerce/product/_search
-{
-"query":{
-    "match_phrase":{
-    "producer":"yaogao producer"
-    }
-},
-"highlight":{
-    "fields":{
-    "producer":{}
-    }
-}
-}</code></pre>
+​    "match_all":{}
+
+   }
+
+  }</code></pre><p>  2.降序排序</p>
+<pre><code>GET /ecommerce/product/_search</code></pre><pre class=" language-json"><code class="language-json"><span class="token punctuation">{</span>
+
+  <span class="token property">"query"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+
+​    <span class="token property">"match"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+
+​    <span class="token property">"name"</span><span class="token operator">:</span><span class="token string">"yagao"</span>
+
+​    <span class="token punctuation">}</span>
+
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+  <span class="token property">"sort"</span><span class="token operator">:</span><span class="token punctuation">[</span>
+
+​    <span class="token punctuation">{</span><span class="token property">"price"</span><span class="token operator">:</span><span class="token string">"desc"</span><span class="token punctuation">}</span>
+
+​    <span class="token punctuation">]</span>
+
+  <span class="token punctuation">}</span></code></pre>
+<p>  3.分页查询</p>
+<pre><code>GET /ecommerce/product/_search</code></pre><pre class=" language-json"><code class="language-json"><span class="token punctuation">{</span>
+
+  <span class="token property">"query"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+
+​    <span class="token property">"match_all"</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+  <span class="token property">"from"</span><span class="token operator">:</span><span class="token number">1</span><span class="token punctuation">,</span>
+
+  <span class="token property">"size"</span><span class="token operator">:</span><span class="token number">2</span>
+
+  <span class="token punctuation">}</span></code></pre>
+<p>  4.指定查询输出的字段</p>
+<pre><code>  GET /ecommerce/product/_search</code></pre><pre class=" language-json"><code class="language-json"> <span class="token punctuation">{</span>
+
+  <span class="token property">"query"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+
+​    <span class="token property">"match_all"</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+  <span class="token property">"_source"</span><span class="token operator">:</span><span class="token punctuation">[</span><span class="token string">"name"</span><span class="token punctuation">,</span><span class="token string">"price"</span><span class="token punctuation">]</span>
+
+  <span class="token punctuation">}</span>
+
+  <span class="token punctuation">}</span></code></pre>
+<p>  5.对数据进行过滤</p>
+<pre><code>GET /ecommerce/product/_search</code></pre><pre class=" language-json"><code class="language-json"> <span class="token punctuation">{</span>
+
+  <span class="token property">"query"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+
+​    <span class="token property">"bool"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+
+​    <span class="token property">"must"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+
+​      <span class="token property">"match"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+
+​      <span class="token property">"name"</span><span class="token operator">:</span><span class="token string">"yagao"</span>
+
+​      <span class="token punctuation">}</span>
+
+​    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+​    <span class="token property">"filter"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+
+​      <span class="token property">"range"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+
+​      <span class="token property">"price"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+
+​        <span class="token property">"gt"</span><span class="token operator">:</span><span class="token number">11</span>
+
+​      <span class="token punctuation">}</span>
+
+​      <span class="token punctuation">}</span>
+
+​    <span class="token punctuation">}</span>
+
+​    <span class="token punctuation">}</span>
+
+  <span class="token punctuation">}</span>
+
+  <span class="token punctuation">}</span> </code></pre>
+<p>  6.全文检索</p>
+<pre><code> GET /ecommerce/product/_search</code></pre><pre class=" language-json"><code class="language-json"><span class="token punctuation">{</span>
+
+  <span class="token property">"query"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+
+​    <span class="token property">"match"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+
+​    <span class="token property">"producer"</span><span class="token operator">:</span><span class="token string">"yagao producer"</span>
+
+​    <span class="token punctuation">}</span>
+
+  <span class="token punctuation">}</span>
+
+  <span class="token punctuation">}</span></code></pre>
+<p>  7.短语搜索</p>
+<pre class=" language-json"><code class="language-json">GET /ecommerce/product/_search</code></pre>
+<pre class=" language-json"><code class="language-json"><span class="token punctuation">{</span>
+
+  <span class="token property">"query"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+
+​    <span class="token property">"match_phrase"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+
+​    <span class="token property">"producer"</span><span class="token operator">:</span><span class="token string">"yaogao producer"</span>
+
+​    <span class="token punctuation">}</span>
+
+  <span class="token punctuation">}</span>
+
+  <span class="token punctuation">}</span></code></pre>
+<p>  8.高亮</p>
+<pre class=" language-json"><code class="language-json">GET /ecommerce/product/_search</code></pre>
+<pre class=" language-json"><code class="language-json">  <span class="token punctuation">{</span>
+
+  <span class="token property">"query"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+
+​    <span class="token property">"match_phrase"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+
+​    <span class="token property">"producer"</span><span class="token operator">:</span><span class="token string">"yaogao producer"</span>
+
+​    <span class="token punctuation">}</span>
+
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+  <span class="token property">"highlight"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+
+​    <span class="token property">"fields"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+
+​    <span class="token property">"producer"</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+​    <span class="token punctuation">}</span>
+
+  <span class="token punctuation">}</span>
+
+  <span class="token punctuation">}</span></code></pre>
+
                 
             </div>
             <hr/>
@@ -607,7 +666,7 @@ GET /ecommerce/product/_search
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://www.wwtianmei.cn/2019/11/10/es-de-duo-chong-jian-suo-fang-shi/">http://www.wwtianmei.cn/2019/11/10/es-de-duo-chong-jian-suo-fang-shi/</a>
+                    <a href="http://www.wwtianmei.cn/2020/12/29/es-de-duo-chong-jian-suo-fang-shi/">http://www.wwtianmei.cn/2020/12/29/es-de-duo-chong-jian-suo-fang-shi/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -644,7 +703,11 @@ GET /ecommerce/product/_search
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/Elasticsearch/">
+                                    <span class="chip bg-color">Elasticsearch</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -816,13 +879,13 @@ GET /ecommerce/product/_search
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2019/11/11/a-li-fen-bu-shi-shi-wu-kuang-jia-seata/">
+                <a href="/2020/12/29/redis-huan-cun-shi-xiao/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="阿里分布式事物框架(seata)">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Redis缓存解决办法">
                         
-                        <span class="card-title">阿里分布式事物框架(seata)</span>
+                        <span class="card-title">Redis缓存解决办法</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -833,7 +896,7 @@ GET /ecommerce/product/_search
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2019-11-11
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-12-29
                         </span>
                         <span class="publish-author">
                             
@@ -842,6 +905,14 @@ GET /ecommerce/product/_search
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Redis/">
+                        <span class="chip bg-color">Redis</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -853,13 +924,13 @@ GET /ecommerce/product/_search
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2019/11/10/hello-world/">
+                <a href="/2020/12/29/redis-bi-ji-bu-long-huan-cun-chi-jiu-hua/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Redis笔记(布隆,缓存,持久化)">
                         
-                        <span class="card-title">Hello World</span>
+                        <span class="card-title">Redis笔记(布隆,缓存,持久化)</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -870,7 +941,7 @@ GET /ecommerce/product/_search
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2019-11-10
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-29
                             </span>
                         <span class="publish-author">
                             
@@ -879,6 +950,14 @@ GET /ecommerce/product/_search
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Redis/">
+                        <span class="chip bg-color">Redis</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -1048,7 +1127,7 @@ GET /ecommerce/product/_search
         <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
                    server="netease"
                    type="playlist"
-                   id="503838841"
+                   id="4965675848"
                    fixed='true'
                    autoplay='false'
                    theme='#42b983'

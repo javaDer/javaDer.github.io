@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="redis, JAVA，技术,码农,热情,学习">
+    <meta name="keywords" content="Redis笔记(布隆,缓存,持久化), JAVA，技术,码农,热情,学习">
     <meta name="description" content="技术，JAVA，微服务">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>redis | 布衣的私人小站</title>
+    <title>Redis笔记(布隆,缓存,持久化) | 布衣的私人小站</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -32,7 +32,7 @@
 
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 <link rel="alternate" href="/atom.xml" title="布衣的私人小站" type="application/atom+xml">
-
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 </head>
 
@@ -315,12 +315,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">redis</h1>
+                    <h1 class="description center-align post-title">Redis笔记(布隆,缓存,持久化)</h1>
                 </div>
             </div>
         </div>
@@ -434,9 +434,13 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Redis/">
+                                <span class="chip bg-color">Redis</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -464,17 +468,138 @@
         <hr class="clearfix">
 
         
-        <!-- 是否加载使用自带的 prismjs. -->
-        <link rel="stylesheet" href="/libs/prism/prism.css">
-        
 
         
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2><span id="redis-xue-xi-bi-ji">Redis 学习笔记</span><a href="#redis-xue-xi-bi-ji" class="header-anchor">#</a></h2><ul>
-<li>中文学习网站: redis.cn</li>
+                <h2><span id="redis-bi-ji-bu-long-huan-cun-chi-jiu-hua">Redis笔记(布隆,缓存,持久化)</span><a href="#redis-bi-ji-bu-long-huan-cun-chi-jiu-hua" class="header-anchor">#</a></h2><blockquote>
+<p>redis模块地址: <a href="https://redis.io/modules" target="_blank" rel="noopener">https://redis.io/modules</a></p>
+<p>redis 中文地址: <a href="http://redis.cn/" target="_blank" rel="noopener">http://redis.cn/</a></p>
+<p>Redis可以自定义添加模块</p>
+<p><img src="https://gitee.com/fa20091001/blogImage/raw/master/picGoimg/image-20201229155131550.png" alt="image-20201229155131550"></p>
+</blockquote>
+<h3><span id="bu-long-guo-lu-qi-mo-kuai">布隆过滤器模块:</span><a href="#bu-long-guo-lu-qi-mo-kuai" class="header-anchor">#</a></h3><h4><span id="an-zhuang-bu-long-guo-lu-qi">安装布隆过滤器</span><a href="#an-zhuang-bu-long-guo-lu-qi" class="header-anchor">#</a></h4><blockquote>
+<pre class=" language-shell"><code class="language-shell">//下载
+wget https://github.com/RedisBloom/RedisBloom/archive/master.zip
+//解压
+unzip master.zip
+//编译
+make 
+//编译后生成 redisbloom.so 并cp到指定目录
+cp ./redisbloom.so /usr/local/redis/
+//启动
+./bin/redis-server --loadmodule  ./redisbloom.so</code></pre>
+</blockquote>
+<h5><span id="jie-jue-wen-ti-chang-jing-huan-cun-chuan-tou"><em>解决问题场景:缓存穿透</em></span><a href="#jie-jue-wen-ti-chang-jing-huan-cun-chuan-tou" class="header-anchor">#</a></h5><ol>
+<li>如果穿透了,不存在</li>
+<li>client增加redis中的key,value标记</li>
+<li>数据库增加元素</li>
+<li>完成元素对bloom的添加</li>
+</ol>
+<h5><span id="gai-lu-jie-jue-wen-ti-bu-ke-neng-bai-fen-zhi-bai-zheng-que">概率解决问题 不可能百分之百正确</span><a href="#gai-lu-jie-jue-wen-ti-bu-ke-neng-bai-fen-zhi-bai-zheng-que" class="header-anchor">#</a></h5><ol>
+<li>有的向bitmap中标记</li>
+<li>请求的可能会被误标记</li>
+<li>一定概率会大量减少放行: 穿透</li>
+<li>成本低</li>
+</ol>
+<p>总结: 布隆过滤器判断中 如果出现1 不一定是1 有可能是碰撞导致; 如果出现0 一定是0</p>
+<blockquote>
+<blockquote>
+<p><img src="https://gitee.com/fa20091001/blogImage/raw/master/picGoimg/image-20201229163548134.png" alt="image-20201229163548134"></p>
+</blockquote>
+<p><font color="#sdfg">问题: bloom布隆过滤器; counting bloom; cukcoo 布谷鸟过滤器</font></p>
+</blockquote>
+<h3><span id="reidis-zuo-wei-huan-cun-de-shi-yong">Reidis作为缓存的使用:</span><a href="#reidis-zuo-wei-huan-cun-de-shi-yong" class="header-anchor">#</a></h3><h4><span id="redis-zuo-wei-shu-ju-huan-cun-de-que-bie">redis作为数据/缓存的却别:</span><a href="#redis-zuo-wei-shu-ju-huan-cun-de-que-bie" class="header-anchor">#</a></h4><ol>
+<li>缓存数据并不重要</li>
+<li>缓存不是全量数据</li>
+<li>缓存应该随着访问变化</li>
+<li>热点数据</li>
+</ol>
+<h4><span id="key-de-you-xian-qi">key的有限期:</span><a href="#key-de-you-xian-qi" class="header-anchor">#</a></h4><blockquote>
+<ol>
+<li><p>不会随着访问延长时间</p>
+</li>
+<li><p>发生写,会剔除过期时间</p>
+</li>
+<li><p>倒计时,且redis不能延长</p>
+</li>
+<li><p>定时 EXPIREAT</p>
+</li>
+<li><p>业务逻辑自己补全</p>
+</li>
+</ol>
+<h5><span id="guo-qi-shi-jian-pan-ding-yuan-li">过期时间判定原理:</span><a href="#guo-qi-shi-jian-pan-ding-yuan-li" class="header-anchor">#</a></h5><ol>
+<li><p>被动访问时判定</p>
+</li>
+<li><p>周期轮询判定(增量)</p>
+<p>目的稍微牺牲下内存,但是确保了redis性能为王</p>
+</li>
+</ol>
+</blockquote>
+<h4><span id="nei-cun-da-xiao">内存大小</span><a href="#nei-cun-da-xiao" class="header-anchor">#</a></h4><ol>
+<li><p>maxmemory</p>
+<blockquote>
+<p><code>maxmemory</code>配置指令用于配置Redis存储数据时指定限制的内存大小。通过redis.conf可以设置该指令，或者之后使用CONFIG SET命令来进行运行时配置。</p>
+<p>例如为了配置内存限制为100mb，以下的指令可以放在<code>redis.conf</code>文件中。</p>
+<pre class=" language-conf"><code class="language-conf">maxmemory 100mb</code></pre>
+</blockquote>
+</li>
+<li><p>回收策略: </p>
+<blockquote>
+<p>当maxmemory限制达到的时候Redis会使用的行为由 Redis的maxmemory-policy配置指令来进行配置。</p>
+<p>以下的策略是可用的:</p>
+<ul>
+<li><strong>noeviction</strong>:返回错误当内存限制达到并且客户端尝试执行会让更多内存被使用的命令（大部分的写入指令，但DEL和几个例外）</li>
+<li><strong>allkeys-lru</strong>: 尝试回收最少使用的键（LRU），使得新添加的数据有空间存放。</li>
+<li><strong>volatile-lru</strong>: 尝试回收最少使用的键（LRU），但仅限于在过期集合的键,使得新添加的数据有空间存放。</li>
+<li><strong>allkeys-random</strong>: 回收随机的键使得新添加的数据有空间存放。</li>
+<li><strong>volatile-random</strong>: 回收随机的键使得新添加的数据有空间存放，但仅限于在过期集合的键。</li>
+<li><strong>volatile-ttl</strong>: 回收在过期集合的键，并且优先回收存活时间（TTL）较短的键,使得新添加的数据有空间存放。</li>
 </ul>
+<p>如果没有键满足回收的前提条件的话，策略<strong>volatile-lru</strong>, <strong>volatile-random</strong>以及<strong>volatile-ttl</strong>就和noeviction 差不多了。</p>
+<p>选择正确的回收策略是非常重要的，这取决于你的应用的访问模式，不过你可以在运行时进行相关的策略调整，并且监控缓存命中率和没命中的次数，通过RedisINFO命令输出以便调优。</p>
+<p>一般的经验规则:</p>
+<ul>
+<li>使用<strong>allkeys-lru</strong>策略：当你希望你的请求符合一个幂定律分布，也就是说，你希望部分的子集元素将比其它其它元素被访问的更多。如果你不确定选择什么，这是个很好的选择。.</li>
+<li>使用<strong>allkeys-random</strong>：如果你是循环访问，所有的键被连续的扫描，或者你希望请求分布正常（所有元素被访问的概率都差不多）。</li>
+<li>使用<strong>volatile-ttl</strong>：如果你想要通过创建缓存对象时设置TTL值，来决定哪些对象应该被过期。</li>
+</ul>
+<p><strong>allkeys-lru</strong> 和 <strong>volatile-random</strong>策略对于当你想要单一的实例实现缓存及持久化一些键时很有用。不过一般运行两个实例是解决这个问题的更好方法。</p>
+<p>为了键设置过期时间也是需要消耗内存的，所以使用<strong>allkeys-lru</strong>这种策略更加高效，因为没有必要为键取设置过期时间当内存有压力时。</p>
+</blockquote>
+</li>
+</ol>
+<h3><span id="redis-chi-jiu-hua-ji-zhi">Redis持久化机制:</span><a href="#redis-chi-jiu-hua-ji-zhi" class="header-anchor">#</a></h3><blockquote>
+<p>Redis 提供了不同级别的持久化方式:</p>
+<ol>
+<li>RDB持久化方式能够在指定的时间间隔能对你的数据快照存储</li>
+<li>AOF持久化方式记录每次对服务器写的操作,当服务器重启的时候会重新执行这些命令来恢复原始的数据,AOF命令以Redis协议最佳保存每次写的操作到文件末尾,Redis还能对AOF文件进行后台重写,使得AOF文件的体积不至于过大</li>
+<li>也可以同时开启两种持久化方式,在这种情况下,当redis重启的时候会优先载入AOF文件来恢复原始的数据,因为在通常情况下AOF文件保存的数据集要比RDB文件保存的数据集要完整</li>
+</ol>
+</blockquote>
+<h4><span id="rdb-chi-jiu-hua-fang-shi">RDB持久化方式:</span><a href="#rdb-chi-jiu-hua-fang-shi" class="header-anchor">#</a></h4><h5><span id="rdb-de-you-dian">RDB的优点:</span><a href="#rdb-de-you-dian" class="header-anchor">#</a></h5><ol>
+<li>RDB是一个非常紧凑的文件,它包含了某个时间点的数据集,非常适用于数据集的备份,比如可以在每个小时保存一下过去24小时内的数据,同事每天保存过去30天的数据,这样即使出了问题也可以根据需求恢复到不同的版本的数据集.</li>
+<li>RDB是一个紧凑的单一文件,很方便传输到另一个远端数据中心,非常适用于灾难恢复.</li>
+<li>RDB在保存RDB文件时会父进程唯一需要做的是fork出一个子进程,接下来全部由子进程来做,父进程不需要在做其他IO操作,所以RDB持久化方式可以最大化redis的性能.</li>
+<li>与AOF相比较, 在恢复大的数据集的时候,RDB方式会更快一些 </li>
+</ol>
+<h5><span id="rdb-de-que-dian">RDB的缺点:</span><a href="#rdb-de-que-dian" class="header-anchor">#</a></h5><ol>
+<li>如果Redis服务意外停止工作(断电)的情况下会丢失的数据,虽然可以配置不同的save时间点(如每隔5分钟并且对数据集有100个写的操作),是redis要完整的保存整个数据集是一个比较繁重的工作,通常每隔5分钟或者更久做一次完整的保存,加入在redis意外宕机,可能会丢失几分钟的数据.</li>
+<li>RDB需要经常fork子进程来保存数据集到硬盘上,当数据及比较大的时候,fork的过程就非常耗时,可能会导致Redis在一些毫秒级内不能响应客户端的请求,如果数据及巨大并且CPU性能不是很好的青口下,这种情况会持续几秒,AOF也需要fork,但是你可以调节重写日志文件的频率来提高数据及的耐久度.</li>
+</ol>
+<h5><span id="kuai-zhao">快照:</span><a href="#kuai-zhao" class="header-anchor">#</a></h5><blockquote>
+<p>在默认情况下,redis将数据库快照保存在名字为dump.rdb的二进制文件中.可以对Redis进行设置,让它在”N秒内数据集至少有M个改动”这一条件被满足时,自动报存一次数据及.也可以通过调用SAVE和BGSAVE,手动让Redis进行数据集保存操作</p>
+<pre class=" language-conf"><code class="language-conf">save 60 1000</code></pre>
+<p>这种持久化方式称为快照  snapshotting.</p>
+</blockquote>
+<h5><span id="gong-zuo-fang-shi">工作方式:</span><a href="#gong-zuo-fang-shi" class="header-anchor">#</a></h5><p>当redis需要保存dump.rdb文件时,服务器执行以下操作: </p>
+<ol>
+<li>redis调用forks,同事拥有父进程和子进程</li>
+<li>子进程将数据集写入到一个临时的RDB文件中</li>
+<li>当子进程完成新RDB文件写入时,Redis用新RDB文件替换原来的RDB文件,并删除旧的RDB文件</li>
+</ol>
+<p>这种工作方式使得Redis可以从写时复制(copy-on-write)机制中获益</p>
 
                 
             </div>
@@ -501,7 +626,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://www.wwtianmei.cn/2020/12/29/redis/">http://www.wwtianmei.cn/2020/12/29/redis/</a>
+                    <a href="http://www.wwtianmei.cn/2020/12/29/redis-bi-ji-bu-long-huan-cun-chi-jiu-hua/">http://www.wwtianmei.cn/2020/12/29/redis-bi-ji-bu-long-huan-cun-chi-jiu-hua/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -538,7 +663,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/Redis/">
+                                    <span class="chip bg-color">Redis</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -706,18 +835,17 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2020/12/29/redis/">
+                <a href="/2020/12/29/es-de-duo-chong-jian-suo-fang-shi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="redis">
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="ES的多种检索方式">
                         
-                        <span class="card-title">redis</span>
+                        <span class="card-title">ES的多种检索方式</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -727,9 +855,9 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-29
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-12-29
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -738,7 +866,14 @@
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Elasticsearch/">
+                        <span class="chip bg-color">Elasticsearch</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -944,7 +1079,7 @@
         <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
                    server="netease"
                    type="playlist"
-                   id="503838841"
+                   id="4965675848"
                    fixed='true'
                    autoplay='false'
                    theme='#42b983'
