@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Docker实战之入门以及Dockerfile(三), JAVA，技术,码农,热情,学习">
+    <meta name="keywords" content="epoll的本质, JAVA，技术,码农,热情,学习">
     <meta name="description" content="技术，JAVA，微服务">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Docker实战之入门以及Dockerfile(三) | 布衣的私人小站</title>
+    <title>epoll的本质 | 布衣的私人小站</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -315,12 +315,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Docker实战之入门以及Dockerfile(三)</h1>
+                    <h1 class="description center-align post-title">epoll的本质</h1>
                 </div>
             </div>
         </div>
@@ -434,25 +434,12 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/Docker/">
-                                <span class="chip bg-color">Docker</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/Docker/" class="post-category">
-                                Docker
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -461,7 +448,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2016-03-09
+                    2021-06-24
                 </div>
                 
 
@@ -482,106 +469,32 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>#Docker实战之入门以及Dockerfile(三)<br><a href="http://git.oschina.net/dockerf/docker-practice/blob/master/Docker%E5%AE%9E%E6%88%98%E4%B9%8B%E5%85%A5%E9%97%A8%E4%BB%A5%E5%8F%8ADockerfile%28%E4%B8%80%29.md?dir=0&amp;filepath=Docker%E5%AE%9E%E6%88%98%E4%B9%8B%E5%85%A5%E9%97%A8%E4%BB%A5%E5%8F%8ADockerfile%28%E4%B8%80%29.md&amp;oid=fd533b0b7665712fdafd3142a61e326ef416dbe1&amp;sha=f11d77675b6ad637a21f26ece6bb11b9e4a66386" target="_blank" rel="noopener">Docker实战之入门以及Dockerfile(一)</a></p>
-<p><a href="http://git.oschina.net/dockerf/docker-practice/blob/master/Docker%E5%AE%9E%E6%88%98%E4%B9%8B%E5%85%A5%E9%97%A8%E4%BB%A5%E5%8F%8ADockerfile%28%E4%BA%8C%29.md?dir=0&amp;filepath=Docker%E5%AE%9E%E6%88%98%E4%B9%8B%E5%85%A5%E9%97%A8%E4%BB%A5%E5%8F%8ADockerfile%28%E4%BA%8C%29.md&amp;oid=76ce88d4a3af4e797873fac07f8f84c4ac72602a&amp;sha=f11d77675b6ad637a21f26ece6bb11b9e4a66386" target="_blank" rel="noopener">Docker实战之入门以及Dockerfile(二)</a></p>
-<p>文章内容，由【<a href="https://csphere.cn/training" target="_blank" rel="noopener">Docker实训课程</a>】</p>
-<p><a href="http://pan.baidu.com/s/1hq2COGc" target="_blank" rel="noopener">第一讲视频</a>翻译整理而成<br><a href="https://github.com/nicescale/docker-training" target="_blank" rel="noopener">培训代码</a> <a href="https://github.com/nicescale/docker-training" target="_blank" rel="noopener">https://github.com/nicescale/docker-training</a><br><a href="http://market.aliyun.com/products/56014007/jxsc000181.html" target="_blank" rel="noopener">虚拟机镜像</a> <a href="http://market.aliyun.com/products/56014007/" target="_blank" rel="noopener">http://market.aliyun.com/products/56014007/</a><br>##应用镜像</p>
-<p>##csphere/wordpress:4.2</p>
-<pre><code># cd docker-training/wordpress/
-# ls -a
-.              license.txt           wp-config-sample.php  wp-login.php
-..             readme.html           wp-content            wp-mail.php
-Dockerfile     wp-activate.php       wp-cron.php           wp-settings.php
-.dockerignore  wp-admin              wp-includes           wp-signup.php
-index.php      wp-blog-header.php    wp-links-opml.php     wp-trackback.php
-init.sh        wp-comments-post.php  wp-load.php           xmlrpc.php
-
-/docker-training/wordpress# cat Dockerfile 
-from csphere/php-fpm:5.4
-
-add init.sh /init.sh
-
-entrypoint ["/init.sh", "/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]</code></pre><p>使用docker后，在项目代码目录下，写Dockerfile文件，非常方便把项目代码直接打包到docker镜像中，如有哪些文件不想被打包进去，可以在<code>.dockerignore</code>文件中定义</p>
-<p>Dockerfile解析：</p>
-<ul>
-<li>wordpress镜像是基于csphere/php-fpm:5.4来进行构建</li>
-<li><code>ONBUILD</code>指令生效，把代码文件拷贝到网站根目录下</li>
-<li><code>init.sh</code>脚本对WordPress连接mysql数据库进行配置，固运行wordpress镜像后，只需要进行配置WordPress即可，数据库已准备就绪！</li>
-</ul>
-<p>生成WordPress镜像</p>
-<p><code>docker build -t csphere/wordpress:4.2 .</code></p>
-<p>查看当前主机本地都有哪些docker镜像</p>
-<p><code>docker images</code></p>
-<p>创建WordPress准备</p>
-<p>查看主机ip地址</p>
-<p><code>ifconfig eth0</code><br>192.168.1.20</p>
-<p>创建WordPress容器：</p>
-<pre><code>docker run -d -p 80:80 --name wordpress -e WORDPRESS_DB_HOST=192.168.1.20 -e WORDPRESS_DB_USER=admin -e WORDPRESS_DB_PASSWORD=csphere2015 csphere/wordpress:4.2
-
-49d0cddb4e6998a43285fe09165030ba80485065867b9cb8fae9fbdb97cd077f</code></pre><p>参数解析：</p>
-<ul>
-<li>-d 后台运行</li>
-<li>-p 80:80 将宿主机的80端口映射到容器的80端口</li>
-<li>–name wordpress 给容器命名为wordpress</li>
-<li>-e WORDPRESS_DB_HOST=192.168.1.20 数据库主机的ip地址（或者域名）</li>
-<li>-e WORDPRESS_DB_USER=admin 数据库的用户，默认是admin</li>
-<li>-e WORDPRESS_DB_PASSWORD=csphere2015 登陆数据的密码，默认是csphere2015</li>
-<li>csphere/wordpress:4.2使用此镜像创建WordPress容器</li>
-</ul>
-<p>访问<code>http://your_ip</code>，选择语言，并进行设置<code>wordpress</code></p>
-<p><img src="https://discuss.csphere.cn/uploads/default/optimized/2X/5/5e887120f584095151915ef2ddbc6c6f6d8e4885_1_422x500.png" alt></p>
-<h2><span id="entrypoint-he-cmd-de-qu-bie">ENTRYPOINT和CMD的区别</span><a href="#entrypoint-he-cmd-de-qu-bie" class="header-anchor">#</a></h2><p>ENTRYPOINT解析</p>
-<p>定义：</p>
-<p>An ENTRYPOINT allows you to configure a container that will run as an executable</p>
-<p>运行一个Docker容器像运行一个程序一样</p>
-<p>ENTRYPOINT的使用方法：</p>
-<p>1.ENTRYPOINT [“executable”, “param1”, “param2”] (the preferred exec form)</p>
-<blockquote>
-<p>推荐使用1方法，启动起来后，pid为1</p>
+                <h2><span id="1-zhai-yao"><strong>1.摘要</strong></span><a href="#1-zhai-yao" class="header-anchor">#</a></h2><blockquote>
+<p>从事服务端开发，少不了要接触网络编程。epoll作为linux下高性能网络服务器的必备技术至关重要，nginx、redis、skynet和大部分游戏服务器都使用到这一多路复用技术。</p>
 </blockquote>
-<p>2.ENTRYPOINT command param1 param2 (shell form) </p>
-<blockquote>
-<p>启动起来后，pid号为shell命令执行完的pid号</p>
-</blockquote>
-<p>CMD解析</p>
-<p>CMD的使用方法：</p>
-<p>1.CMD [“executable”,”param1”,”param2”] (exec form, this is the preferred form)</p>
-<blockquote>
-<p>运行一个可执行的文件并提供参数</p>
-</blockquote>
-<p>2.CMD [“param1”,”param2”] (as default parameters to ENTRYPOINT) </p>
-<blockquote>
-<p>为ENTRYPOINT指定参数</p>
-</blockquote>
-<p>3.CMD command param1 param2 (shell form) </p>
-<blockquote>
-<p>是以”/bin/sh -c”的方法执行的命令</p>
-</blockquote>
-<p>实战测试<code>CMD</code></p>
-<pre><code>vim Dockerfile
-FROM centos:centos7.1.1503
-
-CMD ["/bin/echo", "This is test cmd"]</code></pre><p>生成cmd镜像<br><code>docker build -t csphere/cmd:0.1 .</code><br>生成cmd容器，进行测试<br><code>docker run -it --rm csphere/cmd:0.1</code><br><code>This is test cmd</code><br>测试是否可以替换<code>cmd</code>的命令</p>
-<pre><code>docker run -it csphere/cmd:0.1 /bin/bash
-
-[root@c1963a366319 /]#</code></pre><p>测试结果，在Dockerfile中定义的<code>CMD</code>命令,在执行<code>docker run</code>的时候，<code>CMD</code>命令可以被替换。</p>
-<p>实战测试<code>ENTRYPOINT</code></p>
-<pre><code>FROM centos:centos7.1.1503
-
-ENTRYPOINT ["/bin/echo", "This is test entrypoint"]</code></pre><p>生成ent(entrypoint)镜像<br><code>docker build -t csphere/ent:0.1 .</code></p>
-<p>生成ent容器，进行测试</p>
-<pre><code>docker run -it csphere/ent:0.1
-
-This is test entrypoint</code></pre><p>测试是否可以替换<code>entrypoint</code>的命令</p>
-<pre><code>docker run -it csphere/ent:0.1 /bin/bash
-
-This is test entrypoint /bin/bash</code></pre><p>测试结果，在Dockerfile定义的<code>ENTRYPOINT</code>命令，通过以上方式不能被替换</p>
-<p>实战再次测试<code>ENTRYPOINT</code></p>
-<p><code>docker run -it --entrypoint=/bin/bash csphere/ent:0.1</code><br>测试结果，ENTRYPOINT命令也可以被替换，需要在执行<code>docker run</code>时添加<code>--entrypoint=</code>参数，此方法多用来进行调试</p>
-<p>##更多精彩内容，访问：<a href="https://discuss.csphere.cn" target="_blank" rel="noopener">cSphere-希云社区</a></p>
-<p>说明，文章由<a href="https://csphere.cn" target="_blank" rel="noopener">cSphere-希云</a>所有，转载请整体转载，并保留原文链接，且不得修改原文！</p>
-<p>转载，请联系”cSphere”微信公众号<br><img src="https://discuss.csphere.cn/uploads/default/original/2X/1/1f82a3e93d907fc9fb5acf552f2646b74f5706d5.jpg" alt></p>
-
+<p>因为epoll的重要性,不少游戏公司在招聘服务端JD时,可能会问及epoll相关的问题.比如epoll和select的区别是什么?epoll高效率的原因是什么?如果只靠背诵，显然不能算上深刻的理解。</p>
+<h2><span id="2-liu-cheng">2.流程</span><a href="#2-liu-cheng" class="header-anchor">#</a></h2><h3><span id="yi-cong-wang-qia-jie-shou-shu-ju-shuo-qi">一、从网卡接收数据说起</span><a href="#yi-cong-wang-qia-jie-shou-shu-ju-shuo-qi" class="header-anchor">#</a></h3><p>下图是一个典型的计算机结构图,计算机有CPU,存储器（内存）、网络接口等部件组成。了解epoll本质的<strong>第一步</strong>，要从<strong>硬件</strong>的角度看计算机怎样接收网络数据。</p>
+<p><img src="https://gitee.com/fa20091001/blogImage/raw/master/picGoimg/20210606223854.png" alt="image-20210606223854474"></p>
+<p>​                                            计算机结构图（图片来源：linux内核完全注释之微型计算机组成结构）</p>
+<p>下图展示了网卡接收数据的过程。在①阶段，网卡收到网线传来的数据；经过②阶段的硬件电路的传输；最终将数据写入到内存中的某个地址上（③阶段）。这个过程涉及到DMA传输、IO通路选择等硬件有关的知识，但我们只需知道：<strong>网卡会把接收到的数据写入内存。</strong></p>
+<p><img src="https://gitee.com/fa20091001/blogImage/raw/master/picGoimg/20210606223957.png" alt="image-20210606223957295"></p>
+<p>​                                                                网卡接收数据的过程</p>
+<p>通过硬件传输，网卡接收的数据存放到内存中。操作系统就可以去读取它们。</p>
+<h3><span id="er-ru-he-zhi-dao-jie-shou-liao-shu-ju">二、如何知道接收了数据？</span><a href="#er-ru-he-zhi-dao-jie-shou-liao-shu-ju" class="header-anchor">#</a></h3><p>​    了解epoll本质的第二步,要从CPU的角度来看数据接收,先了解一个概念–==中断.==</p>
+<ol>
+<li>计算机执行程序时,会有优先级的需求.比如,但计算机收到断电信号时(电容可以保存少许电量,供CPU运行很短的一小段时间),他应立即去保存数据,保存数据的程序具有较高的优先级.</li>
+<li>一般而言,有硬件产生的信号需要CPU立即做出回应(不让数据可能丢失),所以他的优先级很高.CPU理应中断掉正在执行的程序,去做出响应;当CPU完成对硬件的响应后,再重新执行用户程序.中断的过程如下图,和函数调用差不多.只不过函数调用是事先定好位置,而中断的位置有”信号”决定.</li>
+</ol>
+<p><img src="https://gitee.com/fa20091001/blogImage/raw/master/picGoimg/20210606232918.png" alt="img"></p>
+<p>​                                                                中断程序调用</p>
+<ol start="3">
+<li><p>以键盘为例，当用户按下键盘某个按键时，键盘会给cpu的中断引脚发出一个高电平。cpu能够捕获这个信号，然后执行键盘中断程序。下图展示了各种硬件通过中断与cpu交互。</p>
+<p><img src="https://gitee.com/fa20091001/blogImage/raw/master/picGoimg/20210606233028.jpeg" alt="img"></p>
+<p>​                                                cpu中断（图片来源：net.pku.edu.cn）</p>
+<p>现在可以回答本节提出的问题了：当网卡把数据写入到内存后，==<strong>网卡向cpu发出一个中断信号，操作系统便能得知有新数据到来</strong>==，再通过网卡<strong>中断程序</strong>去处理数据。</p>
+</li>
+</ol>
+<h3><span id="san-jin-cheng-zu-sai-wei-shi-me-bu-zhan-yong-cpu-zi-yuan">三、进程阻塞为什么不占用cpu资源？</span><a href="#san-jin-cheng-zu-sai-wei-shi-me-bu-zhan-yong-cpu-zi-yuan" class="header-anchor">#</a></h3><h3><span id="si-nei-he-jie-shou-wang-luo-shu-ju-quan-guo-cheng">四、内核接收网络数据全过程</span><a href="#si-nei-he-jie-shou-wang-luo-shu-ju-quan-guo-cheng" class="header-anchor">#</a></h3><h3><span id="wu-tong-shi-jian-shi-duo-ge-socket-de-jian-dan-fang-fa">五、同时监视多个socket的简单方法</span><a href="#wu-tong-shi-jian-shi-duo-ge-socket-de-jian-dan-fang-fa" class="header-anchor">#</a></h3><h3><span id="liu-epoll-de-she-ji-si-lu">六、epoll的设计思路</span><a href="#liu-epoll-de-she-ji-si-lu" class="header-anchor">#</a></h3><h3><span id="qi-epoll-de-yuan-li-he-liu-cheng">七、epoll的原理和流程</span><a href="#qi-epoll-de-yuan-li-he-liu-cheng" class="header-anchor">#</a></h3><h3><span id="ba-epoll-de-shi-xian-xi-jie">八、epoll的实现细节</span><a href="#ba-epoll-de-shi-xian-xi-jie" class="header-anchor">#</a></h3><h3><span id="jiu-jie-lun">九、结论</span><a href="#jiu-jie-lun" class="header-anchor">#</a></h3>
                 
             </div>
             <hr/>
@@ -607,7 +520,7 @@ This is test entrypoint /bin/bash</code></pre><p>测试结果，在Dockerfile定
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://www.wwtianmei.cn/2016/03/09/docker-shi-zhan-zhi-ru-men-yi-ji-dockerfile-san/">http://www.wwtianmei.cn/2016/03/09/docker-shi-zhan-zhi-ru-men-yi-ji-dockerfile-san/</a>
+                    <a href="http://www.wwtianmei.cn/2021/06/24/epoll-de-ben-zhi/">http://www.wwtianmei.cn/2021/06/24/epoll-de-ben-zhi/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -644,11 +557,7 @@ This is test entrypoint /bin/bash</code></pre><p>测试结果，在Dockerfile定
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/Docker/">
-                                    <span class="chip bg-color">Docker</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -820,13 +729,13 @@ This is test entrypoint /bin/bash</code></pre><p>测试结果，在Dockerfile定
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2016/03/09/docker-shi-zhan-zhi-ru-men-yi-ji-dockerfile-yi/">
+                <a href="/2021/06/24/epoll-shi-ru-he-shi-xian-io-duo-lu-fu-yong-de/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Docker实战之入门以及Dockerfile(一)">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="epoll是如何实现IO多路复用的">
                         
-                        <span class="card-title">Docker实战之入门以及Dockerfile(一)</span>
+                        <span class="card-title">epoll是如何实现IO多路复用的</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -837,27 +746,15 @@ This is test entrypoint /bin/bash</code></pre><p>测试结果，在Dockerfile定
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2016-03-09
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-06-24
                         </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/Docker/" class="post-category">
-                                    Docker
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            布衣
                             
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Docker/">
-                        <span class="chip bg-color">Docker</span>
-                    </a>
-                    
                 </div>
                 
             </div>
@@ -869,13 +766,13 @@ This is test entrypoint /bin/bash</code></pre><p>测试结果，在Dockerfile定
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2016/03/09/docker-shi-zhan-zhi-ru-men-yi-ji-dockerfile-er/">
+                <a href="/2021/06/24/wang-luo-io/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="Docker实战之入门以及Dockerfile(二)">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="网络IO">
                         
-                        <span class="card-title">Docker实战之入门以及Dockerfile(二)</span>
+                        <span class="card-title">网络IO</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -886,27 +783,15 @@ This is test entrypoint /bin/bash</code></pre><p>测试结果，在Dockerfile定
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2016-03-09
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-06-24
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/Docker/" class="post-category">
-                                    Docker
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            布衣
                             
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Docker/">
-                        <span class="chip bg-color">Docker</span>
-                    </a>
-                    
                 </div>
                 
             </div>
